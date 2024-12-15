@@ -1,6 +1,8 @@
 package fr.pantheonsorbonne.miage.engine.local;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /* 
 import fr.pantheonsorbonne.miage.Facade;
@@ -22,9 +24,9 @@ public class Main {
     public static void main(String[] args) {
         // Initialisation des joueurs
         List<Player> joueurs = new ArrayList<>();
-        joueurs.add(new Player("Alice"));
-        joueurs.add(new Player("Bob"));
-        joueurs.add(new Player("Charlie"));
+        joueurs.add(new Player("Alice", PlayerType.DEFENSIF));
+        joueurs.add(new Player("Bob", PlayerType.OPPORTUNISTE));
+        joueurs.add(new Player("Charlie", PlayerType.AGGRESSIF));
 
         // Génération de tous les dominos
         List<Domino> pioche = new ArrayList<>();

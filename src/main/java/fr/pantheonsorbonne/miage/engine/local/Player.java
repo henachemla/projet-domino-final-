@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.miage.engine.local;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /* 
 public class Player {
@@ -20,15 +20,21 @@ public class Player {
 
     private String nom;
     private List<Domino> main;
+    private PlayerType type;
 
-    public Player(String nom) {
+    public Player(String nom,PlayerType type){
         this.nom = nom;
         this.main = new ArrayList<>();
+        this.type=type;
     }
 
     // Retourne le nom du joueur
     public String getName() {
         return nom;
+    }
+
+    public PlayerType getType() {
+        return type;
     }
 
     // Retourne la main du joueur

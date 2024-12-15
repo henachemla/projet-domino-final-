@@ -1,5 +1,4 @@
 package fr.pantheonsorbonne.miage.engine.local;
-
 import java.util.List;
 
 /* 
@@ -64,8 +63,26 @@ public class Game {
     
             return joueurCommencant;
         }
+
+        private void annulerEffetAdverse(Player joueur) {
+            // Si un effet bloquant est actif, l'annuler
+            if (joueurSuivantPasse) {
+                System.out.println(joueur.getName() + " annule l'effet bloquant !");
+                joueurSuivantPasse = false;
+            } else {
+                System.out.println("Aucun effet à annuler pour ce tour.");
+            }
+        }
+        
+        
     
         public void jouerTour(Player joueur) {
+            if (joueurSuivantPasse) {
+                System.out.println(joueur.getName() + " passe son tour à cause d'un domino bloquant !");
+                joueurSuivantPasse = false; // Réinitialise l'effet pour le prochain joueur
+                return;
+            }
+
             System.out.println(joueur.getName() + " joue...");
             Domino dominoChoisi = joueur.chooseDomino(plateau);
         
@@ -74,6 +91,26 @@ public class Game {
                 joueur.removeDomino(dominoChoisi);
                 System.out.println(joueur.getName() + " a joué " + dominoChoisi); // Affiche le domino joué
                 System.out.println("État actuel du plateau: " + plateau); // Affiche le plateau
+
+                switch (joueur.getType()) {
+                    case PlayerType.AGGRESSIF:
+                        if (dominoChoisi.getTotal() >= 10) {
+                            System.out.println(joueur.getName() + " (Aggressif) gagne un bonus pour avoir joué un domino élevé !");
+                        }
+                        break;
+        
+                    case PlayerType.DEFENSIF:
+                        System.out.println(joueur.getName() + " (Défensif) peut annuler un effet adverse.");
+                        annulerEffetAdverse(joueur); // Méthode pour annuler l'effet
+                        break;
+        
+                    case PlayerType.OPPORTUNISTE:
+                        if (dominoChoisi.isDouble()) {
+                            System.out.println(joueur.getName() + " (Opportuniste) rejoue immédiatement grâce à son double !");
+                            jouerTour(joueur); // Le joueur rejoue immédiatement
+                        }
+                        break;
+                }
         
                 // Gérer le domino bloquant
                 if (dominoChoisi.getType().equals("bloquant")) {

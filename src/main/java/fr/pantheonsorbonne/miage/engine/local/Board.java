@@ -48,26 +48,38 @@ public class Board {
     
         public boolean placeDomino(Domino domino, Player joueur) {
             if (dominos.isEmpty()) {
+                // Si le plateau est vide, on ajoute directement le domino
                 dominos.add(domino);
-                appliquerEffetDomino(domino, joueur);
                 return true;
             }
         
+            // Récupère les extrémités actuelle du plateau
             Domino first = dominos.get(0);
             Domino last = dominos.get(dominos.size() - 1);
         
+            // Ajouter au début du plateau
             if (domino.getRight() == first.getLeft()) {
                 dominos.add(0, domino);
-                appliquerEffetDomino(domino, joueur);
                 return true;
-            } else if (domino.getLeft() == last.getRight()) {
-                dominos.add(domino);
-                appliquerEffetDomino(domino, joueur);
+            } else if (domino.getLeft() == first.getLeft()) {
+                dominos.add(0, new Domino(domino.getRight(), domino.getLeft(), domino.getType())); // Inverse les valeurs
                 return true;
             }
         
-            return false; // Domino non valide
+            // Ajouter à la fin du plateau
+            if (domino.getLeft() == last.getRight()) {
+                dominos.add(domino);
+                return true;
+            } else if (domino.getRight() == last.getRight()) {
+                dominos.add(new Domino(domino.getRight(), domino.getLeft(), domino.getType())); // Inverse les valeurs
+                return true;
+            }
+        
+            // Si aucune des extrémités ne correspond, le domino ne peut pas être placé
+            System.out.println(joueur.getName() + " ne peut pas placer le domino : " + domino);
+            return false;
         }
+        
         
         private void appliquerEffetDomino(Domino domino, Player joueur) {
             switch (domino.getType()) {
