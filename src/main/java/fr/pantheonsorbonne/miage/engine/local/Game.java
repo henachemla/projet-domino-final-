@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.miage.engine.local;
 
-import java.util.*;
+import java.util.List;
 
 /* 
 import fr.pantheonsorbonne.miage.Facade;
@@ -71,6 +71,8 @@ public class Game {
             if (dominoChoisi != null) {
                 plateau.placeDomino(dominoChoisi);
                 joueur.removeDomino(dominoChoisi);
+                System.out.println(joueur.getName() + " a joué " + dominoChoisi); // Affiche le domino joué
+                System.out.println("État actuel du plateau: " + plateau); // Affiche le plateau
             } else {
                 if (!pioche.isEmpty()) {
                     Domino dominoPioche = pioche.remove(0);
