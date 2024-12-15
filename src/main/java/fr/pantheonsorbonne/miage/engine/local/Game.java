@@ -30,6 +30,8 @@ public class Game {
         private List<Player> joueurs;
         private Board plateau;
         private List<Domino> pioche;
+        private boolean joueurSuivantPasse = false;
+
     
         public Game(List<Player> joueurs, Board plateau, List<Domino> pioche) {
             this.joueurs = joueurs;
@@ -63,26 +65,32 @@ public class Game {
             return joueurCommencant;
         }
     
-        // Déroulement d'un tour
         public void jouerTour(Player joueur) {
             System.out.println(joueur.getName() + " joue...");
             Domino dominoChoisi = joueur.chooseDomino(plateau);
-    
+        
             if (dominoChoisi != null) {
-                plateau.placeDomino(dominoChoisi);
+                plateau.placeDomino(dominoChoisi, joueur);
                 joueur.removeDomino(dominoChoisi);
                 System.out.println(joueur.getName() + " a joué " + dominoChoisi); // Affiche le domino joué
                 System.out.println("État actuel du plateau: " + plateau); // Affiche le plateau
+        
+                // Gérer le domino bloquant
+                if (dominoChoisi.getType().equals("bloquant")) {
+                    System.out.println("Le prochain joueur passe son tour à cause du domino bloquant.");
+                    joueurSuivantPasse = true; // Variable pour sauter le tour suivant
+                }
             } else {
                 if (!pioche.isEmpty()) {
                     Domino dominoPioche = pioche.remove(0);
-                    System.out.println(joueur.getName() + " pioche un domino.");
                     joueur.addDomino(dominoPioche);
+                    System.out.println(joueur.getName() + " pioche un domino : " + dominoPioche);
                 } else {
                     System.out.println(joueur.getName() + " passe son tour.");
                 }
             }
         }
+        
     
         // Vérifie si la partie est terminée
         public boolean estPartieTerminee() {

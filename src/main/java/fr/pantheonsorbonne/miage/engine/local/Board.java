@@ -1,6 +1,8 @@
 package fr.pantheonsorbonne.miage.engine.local;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /* 
@@ -44,32 +46,53 @@ public class Board {
             this.dominos = new ArrayList<>();
         }
     
-        // Ajoute un domino au plateau
-        public boolean placeDomino(Domino domino) {
+        public boolean placeDomino(Domino domino, Player joueur) {
             if (dominos.isEmpty()) {
                 dominos.add(domino);
+                appliquerEffetDomino(domino, joueur);
                 return true;
             }
-    
+        
             Domino first = dominos.get(0);
             Domino last = dominos.get(dominos.size() - 1);
-    
+        
             if (domino.getRight() == first.getLeft()) {
-                dominos.add(0, new Domino(domino.getLeft(), domino.getRight()));
+                dominos.add(0, domino);
+                appliquerEffetDomino(domino, joueur);
                 return true;
             } else if (domino.getLeft() == last.getRight()) {
                 dominos.add(domino);
-                return true;
-            } else if (domino.getLeft() == first.getLeft()) {
-                dominos.add(0, new Domino(domino.getRight(), domino.getLeft()));
-                return true;
-            } else if (domino.getRight() == last.getRight()) {
-                dominos.add(new Domino(domino.getRight(), domino.getLeft()));
+                appliquerEffetDomino(domino, joueur);
                 return true;
             }
-    
+        
             return false; // Domino non valide
         }
+        
+        private void appliquerEffetDomino(Domino domino, Player joueur) {
+            switch (domino.getType()) {
+                case "dynamique":
+                    System.out.println("Domino dynamique : " + joueur.getName() + " peut changer une valeur.");
+                    // Exemple : changer une valeur (ici par défaut à 0)
+                    domino.setLeft(0); // Tu peux ajouter une logique utilisateur pour choisir
+                    break;
+        
+                case "bonus":
+                    int sum = getEndValuesSum();
+                    if (sum % 5 == 0) {
+                        System.out.println("Double Bonus ! Les extrémités totalisent un multiple de 5.");
+                    }
+                    break;
+        
+                case "bloquant":
+                    System.out.println("Domino bloquant ! Le prochain joueur passe son tour.");
+                    break;
+        
+                default:
+                    break; // Standard : rien à appliquer
+            }
+        }
+        
     
         // Vérifie si un domino peut être placé sur le plateau
         public boolean canPlace(Domino domino) {

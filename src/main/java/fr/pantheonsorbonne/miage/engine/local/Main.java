@@ -30,12 +30,15 @@ public class Main {
         List<Domino> pioche = new ArrayList<>();
         for (int i = 0; i <= 6; i++) {
             for (int j = i; j <= 6; j++) {
-                pioche.add(new Domino(i, j));
+                String type = "standard";
+                if (i == j) type = "bonus";  // Les doubles sont des "double bonus"
+                if (i == 3 && j == 6) type = "bloquant"; // Exemple : domino bloquant
+                if (i == 2 && j == 5) type = "dynamique"; // Exemple : domino dynamique
+                pioche.add(new Domino(i, j, type));
             }
         }
-
-        // Mélange de la pioche
         Collections.shuffle(pioche);
+
 
         // Distribution des dominos aux joueurs
         int dominosParJoueur = 7;

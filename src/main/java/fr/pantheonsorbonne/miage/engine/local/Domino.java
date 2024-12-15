@@ -37,10 +37,12 @@ public class Domino {
 
         private int left;
         private int right;
+        private String type;
     
-        public Domino(int left, int right) {
+        public Domino(int left, int right, String type) {
             this.left = left;
             this.right = right;
+            this.type = (type == null) ? "standard" : type;
         }
     
         // Retourne la valeur gauche du domino
@@ -51,6 +53,18 @@ public class Domino {
         // Retourne la valeur droite du domino
         public int getRight() {
             return right;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setLeft(int left) {
+            this.left = left;
+        }
+    
+        public void setRight(int right) {
+            this.right = right;
         }
     
         // Retourne la somme des deux valeurs
