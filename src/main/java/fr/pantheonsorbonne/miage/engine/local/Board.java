@@ -72,9 +72,13 @@ public class Board {
         private void appliquerEffetDomino(Domino domino, Player joueur) {
             switch (domino.getType()) {
                 case "dynamique":
-                    System.out.println("Domino dynamique : " + joueur.getName() + " peut changer une valeur.");
-                    // Exemple : changer une valeur (ici par défaut à 0)
-                    domino.setLeft(0); // Tu peux ajouter une logique utilisateur pour choisir
+                    if (!domino.isUtilise()) {
+                        System.out.println("Domino dynamique ! " + joueur.getName() + " peut changer une valeur.");
+                        // Exemple simple : Changer la valeur droite en 0
+                        domino.setRight(0);
+                        domino.utiliserCapacite(); // Marquer comme utilisé
+                        System.out.println("Nouvelle valeur du domino : " + domino);
+                    }
                     break;
         
                 case "bonus":

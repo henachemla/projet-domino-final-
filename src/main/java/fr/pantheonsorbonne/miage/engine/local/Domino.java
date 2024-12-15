@@ -38,11 +38,13 @@ public class Domino {
         private int left;
         private int right;
         private String type;
+        private boolean utilise;
     
         public Domino(int left, int right, String type) {
             this.left = left;
             this.right = right;
             this.type = (type == null) ? "standard" : type;
+            this.utilise = false;
         }
     
         // Retourne la valeur gauche du domino
@@ -59,6 +61,10 @@ public class Domino {
             return type;
         }
 
+        public boolean isUtilise() {
+            return utilise;
+        }
+
         public void setLeft(int left) {
             this.left = left;
         }
@@ -66,6 +72,13 @@ public class Domino {
         public void setRight(int right) {
             this.right = right;
         }
+
+        public void utiliserCapacite() {
+            if (type.equals("dynamique") && !utilise) {
+                this.utilise = true;
+            }
+        }
+    
     
         // Retourne la somme des deux valeurs
         public int getTotal() {
