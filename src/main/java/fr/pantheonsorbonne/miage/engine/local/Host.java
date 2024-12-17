@@ -15,10 +15,10 @@ public class Host {
             Game game = facade.createNewGame("DominoMultijoueur");
 
             System.out.println("En attente de joueurs...");
-            facade.waitForExtraPlayerCount(2);
+            facade.waitForExtraPlayerCount(1);
 
             System.out.println("La partie commence !");
-            facade.sendGameCommandToAll(game, new GameCommand("start", "Le jeu commence !"));
+            facade.sendGameCommandToAll(game, new GameCommand("START", "Le jeu commence !"));
 
             while (true) {
                 
