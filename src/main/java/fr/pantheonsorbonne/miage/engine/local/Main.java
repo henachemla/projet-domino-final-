@@ -24,9 +24,9 @@ public class Main {
     public static void main(String[] args) {
         // Initialisation des joueurs
         List<Player> joueurs = new ArrayList<>();
-        joueurs.add(new Player("Alice", PlayerType.DEFENSIF));
-        joueurs.add(new Player("Bob", PlayerType.OPPORTUNISTE));
-        joueurs.add(new Player("Charlie", PlayerType.AGGRESSIF));
+        joueurs.add(new Player("Ben", PlayerType.DEFENSIF));
+        joueurs.add(new Player("Hena", PlayerType.OPPORTUNISTE));
+        joueurs.add(new Player("Margaux", PlayerType.AGGRESSIF));
 
         // Génération de tous les dominos
         List<Domino> pioche = new ArrayList<>();
