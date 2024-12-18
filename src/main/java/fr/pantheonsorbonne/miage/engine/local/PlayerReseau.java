@@ -11,12 +11,27 @@ public class PlayerReseau {
             try {
                 System.out.println("Initialisation du client...");
                 PlayerFacade facade = (PlayerFacade) Facade.getFacade();
-                System.out.println("Facade récupérée, attente de readiness...");
                 facade.waitReady(); 
                 System.out.println("Facade prête, tentative de rejoindre le jeu...");
+
+                String playerName = "Joueur1";  // Donne un nom au joueur
+                facade.createNewPlayer(playerName);
+                System.out.println("Nouveau joueur créé : " + playerName);
+
                 // Rejoindre la partie avec le nom du jeu
                 String gameName = "DominoMultijoueur";
-                Game game = facade.autoJoinGame("DominoMultijoueur");
+                Game game = null;
+                while (game == null) {
+                    System.out.println("En attente d'une annonce de jeu dans le lobby...");
+                    game = facade.autoJoinGame("DominoMultijoueur");
+                    if (game == null) {
+                        System.out.println("Aucun jeu trouvé pour le moment. Nouvelle tentative...");
+                        Thread.sleep(2000); // Attendre 2 secondes avant une nouvelle tentative
+                    } else if (!game.getGameName().equals("DominoMultijoueur")) {
+                        System.out.println("Jeu ignoré : " + game.getGameName());
+                        game = null;
+                    }
+                }
                 System.out.println("Rejoint la partie : " + gameName);// n'affiche plus ce message --> beug dans la connexion au jeu 
     
                 Scanner scanner = new Scanner(System.in);
