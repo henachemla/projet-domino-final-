@@ -1,29 +1,6 @@
 package fr.pantheonsorbonne.miage.engine.local;
 import java.util.List;
 
-/* 
-import fr.pantheonsorbonne.miage.Facade;
-import fr.pantheonsorbonne.miage.PlayerFacade;
-*/
-
-/* 
-public class Game {
-    private Facade facade;
-    private String playerName;
-
-    public void createNewPlayer (String playerName){
-        PlayerFacade playerFacade = (PlayerFacade) Facade.getFacade();
-        playerFacade.waitReady(); 
-
-        playerFacade.createNewPlayer(playerName);
-
-        System.out.println("Player created: " + playerName);
-    }
-
-}
-    */
-
-
     public class Game {
     
         private List<Player> joueurs;
@@ -38,7 +15,6 @@ public class Game {
             this.pioche = pioche;
         }
     
-        // Détermine le joueur qui commence
         public Player determinerJoueurCommencant() {
             Player joueurCommencant = null;
             Domino doublePlusHaut = null;
@@ -65,7 +41,6 @@ public class Game {
         }
 
         private void annulerEffetAdverse(Player joueur) {
-            // Si un effet bloquant est actif, l'annuler
             if (joueurSuivantPasse) {
                 System.out.println(joueur.getName() + " annule l'effet bloquant !");
                 joueurSuivantPasse = false;
@@ -79,7 +54,7 @@ public class Game {
         public void jouerTour(Player joueur) {
             if (joueurSuivantPasse) {
                 System.out.println(joueur.getName() + " passe son tour à cause d'un domino bloquant !");
-                joueurSuivantPasse = false; // Réinitialise l'effet pour le prochain joueur
+                joueurSuivantPasse = false; 
                 return;
             }
 
@@ -89,8 +64,8 @@ public class Game {
             if (dominoChoisi != null) {
                 plateau.placeDomino(dominoChoisi, joueur);
                 joueur.removeDomino(dominoChoisi);
-                System.out.println(joueur.getName() + " a joué " + dominoChoisi); // Affiche le domino joué
-                System.out.println("État actuel du plateau: " + plateau); // Affiche le plateau
+                System.out.println(joueur.getName() + " a joué " + dominoChoisi); 
+                System.out.println("État actuel du plateau: " + plateau); 
 
                 switch (joueur.getType()) {
                     case PlayerType.AGGRESSIF:
@@ -101,21 +76,20 @@ public class Game {
         
                     case PlayerType.DEFENSIF:
                         System.out.println(joueur.getName() + " (Défensif) peut annuler un effet adverse.");
-                        annulerEffetAdverse(joueur); // Méthode pour annuler l'effet
+                        annulerEffetAdverse(joueur); 
                         break;
         
                     case PlayerType.OPPORTUNISTE:
                         if (dominoChoisi.isDouble()) {
                             System.out.println(joueur.getName() + " (Opportuniste) rejoue immédiatement grâce à son double !");
-                            jouerTour(joueur); // Le joueur rejoue immédiatement
+                            jouerTour(joueur); 
                         }
                         break;
                 }
         
-                // Gérer le domino bloquant
                 if (dominoChoisi.getType().equals("bloquant")) {
                     System.out.println("Le prochain joueur passe son tour à cause du domino bloquant.");
-                    joueurSuivantPasse = true; // Variable pour sauter le tour suivant
+                    joueurSuivantPasse = true; 
                 }
             } else {
                 if (!pioche.isEmpty()) {
@@ -129,17 +103,25 @@ public class Game {
         }
         
     
-        // Vérifie si la partie est terminée
         public boolean estPartieTerminee() {
             for (Player joueur : joueurs) {
                 if (joueur.getHand().isEmpty()) {
                     return true;
                 }
             }
-            return pioche.isEmpty() && joueurs.stream().allMatch(joueur -> !joueur.canPlay(plateau));
+        
+            if (!pioche.isEmpty()) {
+                return false;
+            }
+        
+            for (Player joueur : joueurs) {
+                if (joueur.canPlay(plateau)) {
+                    return false;
+                }
+            }
+            return true;
         }
     
-        // Détermine le vainqueur
         public Player determinerVainqueur() {
             Player vainqueur = null;
             int pointsMin = Integer.MAX_VALUE;
@@ -155,7 +137,6 @@ public class Game {
             return vainqueur;
         }
     
-        // Lance le jeu
         public void demarrer() {
             Player joueurCommencant = determinerJoueurCommencant();
             System.out.println("Le joueur " + joueurCommencant.getName() + " commence la partie.");

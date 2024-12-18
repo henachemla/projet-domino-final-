@@ -1,29 +1,27 @@
 package fr.pantheonsorbonne.miage.engine.net;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import fr.pantheonsorbonne.miage.Facade;
 import fr.pantheonsorbonne.miage.PlayerFacade;
 import fr.pantheonsorbonne.miage.model.Game;
 import fr.pantheonsorbonne.miage.model.GameCommand;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 public class PlayerReseau {
 
     public static void main(String[] args) {
         try {
-            System.out.println("Initialisation du client...");
+            System.out.println("Initialisation du client");
             PlayerFacade facade = (PlayerFacade) Facade.getFacade();
             facade.waitReady();
 
-            // Définir le nom du joueur
-            String playerName = "Joueur" + System.currentTimeMillis();
+            String playerName = "Joueur" ;
             facade.createNewPlayer(playerName);
             System.out.println("Nouveau joueur créé : " + playerName);
 
-            // Rejoindre la partie
-            System.out.println("Tentative de rejoindre la partie...");
+            System.out.println("Tentative de rejoindre la partie");
             Game game = facade.autoJoinGame("DominoMultijoueur");
 
             System.out.println("Rejoint la partie : " + game.getGameName());
@@ -32,7 +30,7 @@ public class PlayerReseau {
             Scanner scanner = new Scanner(System.in);
 
             while (true) {
-                System.out.println("En attente des commandes du serveur...");
+                System.out.println("En attente des commandes du serveur");
                 GameCommand command = facade.receiveGameCommand(game);
 
                 switch (command.name()) {

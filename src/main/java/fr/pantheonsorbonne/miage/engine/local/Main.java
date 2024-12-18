@@ -15,7 +15,9 @@ public class Main {
         for (int i = 0; i <= 6; i++) {
             for (int j = i; j <= 6; j++) {
                 String type = "standard";
-                if (i == j) type = "bonus";
+                if (Math.random() < 0.2) {
+                        type = "bonus";
+                }
                 if (i == 3 && j == 6) type = "bloquant"; 
                 if (i == 2 && j == 5) type = "dynamique";
                 pioche.add(new Domino(i, j, type));

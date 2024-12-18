@@ -1,7 +1,6 @@
 package fr.pantheonsorbonne.miage.engine.local;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -12,29 +11,47 @@ import java.util.List;
         public Board() {
             this.dominos = new ArrayList<>();
         }
-    
+        
+        private void appliquerEffetBonus() {
+            int sum = getEndValuesSum(); 
+            if (sum % 5 == 0 && sum !=0) {
+                System.out.println("Domino Bonus ! Les extrémités totalisent un multiple de 5.");
+            }
+        }
         public boolean placeDomino(Domino domino, Player joueur) {
             if (dominos.isEmpty()) {
                 dominos.add(domino);
+                appliquerEffetBonus();
+                appliquerEffetDomino(domino, joueur);
                 return true;
             }
+
+
         
             Domino first = dominos.get(0);
             Domino last = dominos.get(dominos.size() - 1);
         
             if (domino.getRight() == first.getLeft()) {
                 dominos.add(0, domino);
+                appliquerEffetBonus();
+                appliquerEffetDomino(domino, joueur);
                 return true;
             } else if (domino.getLeft() == first.getLeft()) {
                 dominos.add(0, new Domino(domino.getRight(), domino.getLeft(), domino.getType()));
+                appliquerEffetBonus();
+                appliquerEffetDomino(domino, joueur);
                 return true;
             }
         
             if (domino.getLeft() == last.getRight()) {
                 dominos.add(domino);
+                appliquerEffetBonus();
+                appliquerEffetDomino(domino, joueur);
                 return true;
             } else if (domino.getRight() == last.getRight()) {
                 dominos.add(new Domino(domino.getRight(), domino.getLeft(), domino.getType())); 
+                appliquerEffetBonus();
+                appliquerEffetDomino(domino, joueur);
                 return true;
             }
         
@@ -51,13 +68,6 @@ import java.util.List;
                         domino.setRight(0);
                         domino.utiliserCapacite(); 
                         System.out.println("Nouvelle valeur du domino : " + domino);
-                    }
-                    break;
-        
-                case "bonus":
-                    int sum = getEndValuesSum();
-                    if (sum % 5 == 0) {
-                        System.out.println("Double Bonus ! Les extrémités totalisent un multiple de 5.");
                     }
                     break;
         
@@ -92,10 +102,6 @@ import java.util.List;
             Domino first = dominos.get(0);
             Domino last = dominos.get(dominos.size() - 1);
             return first.getLeft() + last.getRight();
-        }
-    
-        public List<Domino> getDominos() {
-            return Collections.unmodifiableList(dominos);
         }
     
         @Override
